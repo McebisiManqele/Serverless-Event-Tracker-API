@@ -20,9 +20,9 @@ public class CreateEventHandler implements RequestHandler<APIGatewayProxyRequest
     // Constructor - set up our tools
     public CreateEventHandler() {
         //Create new ObjectMapper()
-        ObjectMapper objectMapper = new ObjectMapper();
+        this.objectMapper = new ObjectMapper();
         //Create new EventRepository()
-        EventRepository repository = new EventRepository();
+        this.repository = new EventRepository();
     }
 
     // Main method - AWS calls this when someone hits POST /events
@@ -34,7 +34,7 @@ public class CreateEventHandler implements RequestHandler<APIGatewayProxyRequest
             String requestBody = request.getBody();
 
             //Check if body is null or empty, return 400 error if so
-            if (request == null || requestBody.trim().isEmpty()) {
+            if (requestBody == null || requestBody.trim().isEmpty()) {
                 return createResponse(400, "Request body is missing or empty");
             }
 
@@ -59,7 +59,7 @@ public class CreateEventHandler implements RequestHandler<APIGatewayProxyRequest
 
             // Return success response (200)
             // Create APIGatewayProxyResponseEvent with status 200 and JSON body
-            APIGatewayProxyResponseEvent response = new APIGatewayProxyResponseEvent();
+            return createResponse(200, responseBody);
 
         } catch (Exception e) {
             // Something went wrong - return error response (500)
