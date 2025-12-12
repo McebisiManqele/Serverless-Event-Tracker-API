@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Event Scheduler API - Serverless Java + AWS
+
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 512
+    Runtime: java17
+    Environment:
+      Variables:
+        TABLE_NAME: !Ref EventTable
+
+Resources:
+  # DynamoDB Table
+  EventTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: EventTable
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  # Lambda Functions
+  CreateEventFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: target/event-scheduler-api-1.0.0.jar
+      Handler: com.cloud.events.handlers.CreateEventHandler::handleRequest
+      Events:
+        CreateEvent:
+          Type: Api
+          Properties:
+            Path: /events
+            Method: post
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref EventTable
+
+  ListEventsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: target/event-scheduler-api-1.0.0.jar
+      Handler: com.cloud.events.handlers.ListEventsHandler::handleRequest
+      Events:
+        ListEvents:
+          Type: Api
+          Properties:
+            Path: /events
+            Method: get
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref EventTable
+
+  GetEventByIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: target/event-scheduler-api-1.0.0.jar
+      Handler: com.cloud.events.handlers.GetEventByIdHandler::handleRequest
+      Events:
+        GetEventById:
+          Type: Api
+          Properties:
+            Path: /events/{id}
+            Method: get
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: !Ref EventTable
+
+Outputs:
+  EventApi:
+    Description: "API Gateway endpoint URL for Prod stage"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/events"
+  
+  EventTable:
+    Description: "DynamoDB table name"
+    Value: !Ref EventTable
