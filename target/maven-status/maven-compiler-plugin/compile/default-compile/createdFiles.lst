@@ -1,0 +1,6 @@
+com/cloud/events/handlers/CreateEventHandler.class
+com/cloud/events/handlers/ListEventsHandler.class
+com/cloud/events/repository/EventRepository.class
+com/cloud/events/model/Event.class
+com/cloud/events/config/DynamoDBClientFactory.class
+com/cloud/events/handlers/GetEventByIdHandler.class

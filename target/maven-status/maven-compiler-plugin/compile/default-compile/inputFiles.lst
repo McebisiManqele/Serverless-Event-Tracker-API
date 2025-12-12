@@ -1,0 +1,6 @@
+/Users/mcebisimanqele/Serverless-Event-Tracker-API/src/main/java/com/cloud/events/model/Event.java
+/Users/mcebisimanqele/Serverless-Event-Tracker-API/src/main/java/com/cloud/events/config/DynamoDBClientFactory.java
+/Users/mcebisimanqele/Serverless-Event-Tracker-API/src/main/java/com/cloud/events/handlers/GetEventByIdHandler.java
+/Users/mcebisimanqele/Serverless-Event-Tracker-API/src/main/java/com/cloud/events/handlers/ListEventsHandler.java
+/Users/mcebisimanqele/Serverless-Event-Tracker-API/src/main/java/com/cloud/events/repository/EventRepository.java
+/Users/mcebisimanqele/Serverless-Event-Tracker-API/src/main/java/com/cloud/events/handlers/CreateEventHandler.java
