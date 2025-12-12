@@ -40,6 +40,11 @@ public class CreateEventHandler implements RequestHandler<APIGatewayProxyRequest
 
             //Convert JSON to Event object Use objectMapper.readValue(requestBody, Event.class)
             Event event = objectMapper.readValue(requestBody, Event.class);
+            
+            //Generate ID if not present (Jackson doesn't call our UUID constructor)
+            if (event.getId() == null) {
+                event.setId(java.util.UUID.randomUUID().toString());
+            }
 
             //Validate the event (check required fields)
             //Check if title and date are not null/empty, return 400 error if missing
